@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <link rel="manifest" href="manifest.json">
+
+<meta name="theme-color" content="#000000">
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="mobile-web-app-capable" content="yes">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="display" content="standalone">
+    
+    <link rel="icon" type="image/png" href="icon.png">
+    <link rel="apple-touch-icon" href="icon.png">
+
+    <title>SECURE LOG: IG ALGO 2026</title>
+    <style>
+        :root { 
+            --bg: #000000; 
+            --text-main: #00f3ff; /* نيون سماوي */
+            --text-dim: #005f99; /* أزرق داكن للشرح */
+            --num-glow: #ff073a; /* نيون أحمر */
+            --border: #333;
+        }
+        body { 
+            font-family: 'Courier New', Courier, monospace; /* خط يشبه البرمجة */
+            margin: 0; 
+            background: var(--bg); 
+            color: var(--text-main); 
+            transition: 0.3s; 
+        }
+        
+        /* الرأس */
+        header { 
+            background: #0a0a0a; 
+            border-bottom: 1px solid #1a1a1a; 
+            padding: 15px 20px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            position: sticky; 
+            top: 0; 
+            z-index: 1000; 
+            box-shadow: 0 5px 20px rgba(0, 243, 255, 0.1);
+        }
+        .logo { 
+            font-weight: bold; 
+            text-transform: uppercase; 
+            letter-spacing: 2px;
+            color: #fff;
+            text-shadow: 0 0 5px rgba(255,255,255,0.5);
+        }
+
+        /* القائمة */
+        .menu-btn { cursor: pointer; font-size: 26px; color: #fff; }
+        .dropdown { 
+            display: none; position: absolute; left: 15px; top: 60px; 
+            background: #111; border: 1px solid #00f3ff; 
+            border-radius: 4px; z-index: 1001; 
+            box-shadow: 0 0 15px rgba(0, 243, 255, 0.2);
+        }
+        .dropdown button { 
+            display: block; width: 180px; padding: 12px; border: none; 
+            background: none; text-align: right; cursor: pointer; 
+            color: var(--text-main); font-family: inherit; border-bottom: 1px solid #222;
+        }
+        .dropdown button:hover { background: #002233; }
+
+        /* المحتوى المطور */
+        .content-area { padding: 25px; max-width: 900px; margin: auto; }
+        .log-entry { margin-bottom: 25px; border-left: 2px solid #111; padding-left: 15px; }
+        
+        .line-num {
+            color: var(--num-glow);
+            font-weight: bold;
+            font-size: 1.2em;
+            text-shadow: 0 0 8px rgba(255, 7, 58, 0.8);
+            margin-left: 10px;
+        }
+        
+        .algo-title {
+            color: var(--text-main);
+            text-shadow: 0 0 5px rgba(0, 243, 255, 0.4);
+            font-weight: bold;
+        }
+        
+        .tech-note {
+            display: block;
+            margin-top: 5px;
+            color: var(--text-dim);
+            font-size: 0.85em;
+            text-shadow: 0 0 2px rgba(0, 95, 153, 0.5);
+        }
+
+        /* الخزنة */
+        #vault-ui { display: none; padding: 10px; background: #000; min-height: 100vh; color: #fff; }
+        .vault-header { border-bottom: 1px solid #333; padding-bottom: 10px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 8px; }
+        .grid-item { position: relative; height: 120px; background: #111; border: 1px solid #333; }
+        .grid-item img, .grid-item video { width: 100%; height: 100%; object-fit: cover; }
+        
+        .controls { position: absolute; bottom: 0; width: 100%; background: rgba(0,0,0,0.8); display: flex; justify-content: space-around; padding: 5px 0; }
+        .controls button { background: none; border: none; color: #00f3ff; font-size: 10px; cursor: pointer; text-transform: uppercase; }
+
+        /* Full View & Modal */
+        #full-view { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 3000; justify-content: center; align-items: center; }
+        #full-view img, #full-view video { max-width: 100%; max-height: 90%; box-shadow: 0 0 30px rgba(0,0,0,0.8); }
+        .close-full { position: absolute; top: 20px; right: 20px; font-size: 30px; color: var(--num-glow); cursor: pointer; }
+
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); justify-content: center; align-items: center; z-index: 2000; }
+        .modal-content { background: #111; padding: 20px; border: 1px solid #00f3ff; box-shadow: 0 0 20px rgba(0, 243, 255, 0.2); width: 85%; max-width: 400px; color: #fff; }
+        textarea { width: 100%; height: 100px; margin-top: 10px; background: #000; color: #00f3ff; border: 1px solid #333; padding: 10px; box-sizing: border-box; font-family: inherit; }
+        .primary-btn { background: #003344; color: #00f3ff; border: 1px solid #00f3ff; padding: 12px; width: 100%; margin-top: 10px; font-weight: bold; cursor: pointer; }
+        .primary-btn:hover { background: #00f3ff; color: #000; }
+    </style>
+</head>
+<body>
+
+<div id="main-site">
+    <header>
+        <div class="logo">/// DATA_LOG_2026</div>
+        <div style="display: flex; gap: 10px; align-items: center;">
+            <button id="setup-btn" style="display:none; color:red; background:none; border:1px solid red;" onclick="setupKeys()">INIT_SETUP</button>
+            <div class="menu-btn" onclick="toggleMenu()">⋮</div>
+        </div>
+        <div id="myDropdown" class="dropdown">
+            <button onclick="alert('ERROR: Language Pack Not Found')">Language Select</button>
+            <button onclick="location.reload()">Refresh Data</button>
+            <button onclick="openFeedback()">Submit Analysis</button>
+        </div>
+    </header>
+    
+    <div class="content-area">
+        <h2 style="color: #fff; border-bottom: 2px solid #ff073a; padding-bottom: 10px;">> ACCESSING CORE ALGORITHMS...</h2>
+        <div id="article-body"></div>
+    </div>
+</div>
+
+<div id="vault-ui">
+    <div class="vault-header">
+        <h3 style="color: var(--text-main); margin:0;">SECURE VAULT v2.0</h3>
+        <button onclick="document.getElementById('fileInput').click()" style="background:var(--text-dim); color:#fff; border:none; padding:8px 15px; cursor:pointer;">[+] ADD MEDIA</button>
+        <input type="file" id="fileInput" multiple accept="image/*,video/*" style="display:none" onchange="handleFiles(this.files)">
+    </div>
+    <div class="grid" id="gallery"></div>
+    <button onclick="location.reload()" style="margin: 40px auto; display:block; background:#000; color:red; border:1px solid red; padding:10px 30px;">[x] DISCONNECT</button>
+</div>
+
+<div id="full-view">
+    <span class="close-full" onclick="closeFullView()">[CLOSE]</span>
+    <div id="full-content" style="width:100%; text-align:center;"></div>
+</div>
+
+<div id="feedbackModal" class="modal">
+    <div class="modal-content">
+        <h3>> INPUT TERMINAL</h3>
+        <p style="font-size:12px; color:#888;">Enter analysis data for processing:</p>
+        <textarea id="feedbackInput" placeholder="_waiting for input..."></textarea>
+        <button class="primary-btn" onclick="processEntry()">EXECUTE</button>
+    </div>
+</div>
+
+<script>
+    const algorithms = [
+        { title: "الأولوية لزمن البقاء النشط (Active Retention Time)", desc: "ملاحظة تقنية: الخوارزمية تقيس توقف التمرير (Scroll Stop) بدقة أجزاء الثانية." },
+        { title: "تحليل المشاعر عبر الذكاء الاصطناعي (Sentiment Analysis)", desc: "ملاحظة تقنية: يتم قراءة تعابير الوجه في أول 3 ثوانٍ لتحديد جاذبية المحتوى." },
+        { title: "تأثير المشاركات الخاصة (Direct Shares Weight)", desc: "ملاحظة تقنية: إرسال الفيديو لـ 5 أشخاص يعادل 100 إعجاب من حيث قوة الوصول." },
+        { title: "كشف العلامات المائية (Cross-Platform Watermarking)", desc: "ملاحظة تقنية: خفض الوصول بنسبة 85% للفيديوهات المعاد نشرها من تيك توك." },
+        { title: "التفاعل الصوتي (Audio Engagement)", desc: "ملاحظة تقنية: الضغط على اسم الصوت المستخدم يرفع ترتيب الحساب في صفحة الاستكشاف." },
+        { title: "تحسين محركات البحث للفيديو (Video SEO)", desc: "ملاحظة تقنية: النص الموجود داخل الفيديو (Overlay Text) أهم من الهاشتاقات." },
+        { title: "سلوك المتابعين الجدد (New Follower Behavior)", desc: "ملاحظة تقنية: إذا لم يتفاعل المتابع الجديد مع أول 3 منشورات، يتم إخفاء حسابك عنه." },
+        { title: "توقيت النشر الديناميكي (Dynamic Posting)", desc: "ملاحظة تقنية: النشر في وقت نشاط جمهورك المحدد يزيد الوصول بنسبة 20%." },
+        { title: "قيمة الحفظ (Save Metric)", desc: "ملاحظة تقنية: الحفظ يعتبر المؤشر الأول للمحتوى التعليمي أو المرجعي." },
+        { title: "تصفية التعليقات العشوائية (Bot Filtration)", desc: "ملاحظة تقنية: التعليقات المكونة من إيموجي فقط لا تحتسب كتفاعل حقيقي." },
+        { title: "جودة الرفع (Upload Bitrate)", desc: "ملاحظة تقنية: الخوارزمية تفضل الفيديوهات المرفوعة بصيغة HDR ومعدل 60 إطاراً." },
+        { title: "الكلمات المفتاحية في البايو (Bio Keywords)", desc: "ملاحظة تقنية: تصنيف الحساب يعتمد كلياً على الكلمات المفتاحية في السيرة الذاتية." },
+        { title: "التفاعل مع القصص (Story Replies)", desc: "ملاحظة تقنية: الردود على الستوري ترفع تصنيف الحساب إلى فئة 'الأصدقاء المقربين'." },
+        { title: "مدة الفيديو المثالية (Optimal Duration)", desc: "ملاحظة تقنية: الفيديوهات بين 7 إلى 11 ثانية تحقق أعلى معدل إعادة مشاهدة." },
+        { title: "معدل الارتداد في البروفايل (Profile Bounce Rate)", desc: "ملاحظة تقنية: دخول الزائر للملف الشخصي وخروجه دون متابعة يضر بتقييم الحساب." }
+    ];
+
+    const body = document.getElementById('article-body');
+    for(let i=0; i<70; i++){
+        let item = algorithms[i % algorithms.length];
+        let randomVal = Math.floor(Math.random() * 99) + 1;
+        body.innerHTML += `
+            <div class="log-entry">
+                <span class="line-num">0${i+1} :: </span>
+                <span class="algo-title">${item.title}</span>
+                <span class="tech-note">> ${item.desc} [Ref: ID-${randomVal}X]</span>
+            </div>`;
+    }
+
+    let db;
+    const request = indexedDB.open("SecureVault_Neon", 1);
+    request.onupgradeneeded = e => {
+        db = e.target.result;
+        db.createObjectStore("files", { keyPath: "id" });
+    };
+    request.onsuccess = e => { db = e.target.result; };
+
+    function toggleMenu() {
+        const d = document.getElementById("myDropdown");
+        d.style.display = d.style.display === "block" ? "none" : "block";
+    }
+
+    function openFeedback() { document.getElementById("feedbackModal").style.display = "flex"; }
+
+    if(!localStorage.getItem('sys_pass')) document.getElementById('setup-btn').style.display = 'block';
+
+    function setupKeys() {
+        const p = prompt("SET ACCESS PASSWORD:");
+        const n = prompt("SET NUCLEAR CODE:");
+        if(p && n) { localStorage.setItem('sys_pass', p); localStorage.setItem('sys_nuke', n); location.reload(); }
+    }
+
+    function processEntry() {
+        const val = document.getElementById('feedbackInput').value;
+        if(val === localStorage.getItem('sys_pass')) {
+            document.getElementById('main-site').style.display = 'none';
+            document.getElementById('feedbackModal').style.display = 'none';
+            document.getElementById('vault-ui').style.display = 'block';
+            renderGallery();
+        } else if(val === localStorage.getItem('sys_nuke')) {
+            const tx = db.transaction("files", "readwrite");
+            tx.objectStore("files").clear();
+            localStorage.clear();
+            location.reload();
+        } else {
+            alert("> DATA PACKET SENT. THANK YOU.");
+            location.reload();
+        }
+    }
+
+    function handleFiles(files) {
+        for(let file of files) {
+            const reader = new FileReader();
+            reader.onload = e => {
+                const tx = db.transaction("files", "readwrite");
+                tx.objectStore("files").add({ id: Date.now() + Math.random(), data: e.target.result, type: file.type, name: file.name });
+                tx.oncomplete = renderGallery;
+            };
+            reader.readAsDataURL(file);
+        }
+    }
+
+    function renderGallery() {
+        const gallery = document.getElementById('gallery');
+        gallery.innerHTML = '';
+        const tx = db.transaction("files", "readonly");
+        tx.objectStore("files").openCursor().onsuccess = e => {
+            const cursor = e.target.result;
+            if (cursor) {
+                const item = cursor.value;
+                const div = document.createElement('div');
+                div.className = 'grid-item';
+                const media = document.createElement(item.type.startsWith('image') ? 'img' : 'video');
+                media.src = item.data;
+                media.onclick = () => openFullView(item);
+                const ctrl = document.createElement('div');
+                ctrl.className = 'controls';
+                ctrl.innerHTML = `
+                    <button onclick="exportFile('${item.data}', '${item.name}')">SAVE</button>
+                    <button onclick="deleteFile(${item.id})" style="color:#ff073a">DEL</button>
+                `;
+                div.appendChild(media);
+                div.appendChild(ctrl);
+                gallery.appendChild(div);
+                cursor.continue();
+            }
+        };
+    }
+
+    function openFullView(item) {
+        const full = document.getElementById('full-view');
+        const content = document.getElementById('full-content');
+        content.innerHTML = '';
+        const el = document.createElement(item.type.startsWith('image') ? 'img' : 'video');
+        el.src = item.data;
+        if(item.type.startsWith('video')) el.controls = true;
+        content.appendChild(el);
+        full.style.display = 'flex';
+    }
+
+    function closeFullView() { document.getElementById('full-view').style.display = 'none'; }
+    window.onclick = e => { if(e.target.className === 'modal') e.target.style.display = 'none'; }
+
+    function exportFile(data, name) {
+        const a = document.createElement('a');
+        a.href = data;
+        a.download = name || "recovered_file";
+        a.click();
+    }
+
+    function deleteFile(id) {
+        if(confirm("> DELETE FILE PERMANENTLY?")) {
+            const tx = db.transaction("files", "readwrite");
+            tx.objectStore("files").delete(id);
+            tx.oncomplete = renderGallery;
+        }
+    }
+</script>
+</body>
+</html>
